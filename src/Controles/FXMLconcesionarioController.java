@@ -103,6 +103,8 @@ public class FXMLconcesionarioController implements Initializable {
        ArrayList<Coche> busquedaC = new ArrayList<Coche>();
         
      if (num_serie.getText().isEmpty()) {
+         
+           
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             
@@ -160,14 +162,13 @@ public class FXMLconcesionarioController implements Initializable {
         
         
         
-        
-        
     }
 
   
     @FXML
     private void Borrar(ActionEvent event) {
         
+        Coche c = new Coche();
         Controles conexion = new Controles();
         Connection cn = conexion.Conectar();
 
@@ -175,9 +176,9 @@ public class FXMLconcesionarioController implements Initializable {
         try {
             //de las distintas opciones prepareStatement
             ps = cn.prepareStatement("Delete coche where num_serie = ?");
-            ps.setString(1, u.getDni());
+            ps.setInt(1, c.getNum_serie());
             ps.executeUpdate();
-            System.out.println("Usuario eliminado");
+            System.out.println("Coche eliminado");
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -193,8 +194,6 @@ public class FXMLconcesionarioController implements Initializable {
                 System.out.println("Error al cerrar recursos" + ex);
             }
         }
-        
-        
         
         
     }
