@@ -14,27 +14,33 @@ import java.util.HashSet;
  * @author Usuario
  */
 public class CocheDAO {
-
     //creamos el metodo para insertar en la base de datos
     public int insertar(Coche c) {
-
+        //Creo un objeto conexion de mi clase Controles.
         Controles conexion = new Controles();
+        //Creo un objeto cn de la ClaseJava Connectio que ENLAZO= a mi objeto java en su
+        //metodo conectar.
         Connection cn = conexion.Conectar();
 
-        //el objeto ps va a encargarse de hacer las consultas psql por medio de la clase PrepareStatement
+        //el objeto ps va a encargarse de hacer las consultas psql a la BBDD por medio de 
+        // la ClaseJava PrepareStatement y devolverlas a java.
         PreparedStatement ps = null;
 
         //variable para comprobar que se ha hecho bien la insercion
         int result = 0;
 
         try {
+            //El objeto que hara la consulta lo ENLAZO= con mi objeto de conexion cn
             ps = cn.prepareStatement("INSERT INTO concesionario VALUES (?,?,?)");
-
+            
+            //El objeto de consulta ps introducira en BD lo que obtenga de mi 
+            //objeto c de la Clase Coche en sus get num_serie, get_marca y get_modelo.
             ps.setInt(1, c.getNum_serie());
             ps.setString(2, c.getMarca());
             ps.setString(3, c.getModelo());
 
-            //si toma valor 1 indica que se ha insertado bien los datos ?????
+            //si la variable result toma valor 1 indica que se ha insertado bien los datos ?????
+            //¿para que la igualo a ps.executeUpdate?
             result = ps.executeUpdate();
 
             System.out.println("Insercion correcta");
@@ -43,6 +49,7 @@ public class CocheDAO {
 
             System.out.println(ex.getMessage());
             System.out.println("");
+            
         } finally {
             try {
                 ps.close();
@@ -52,7 +59,6 @@ public class CocheDAO {
         }
 
         return result;
-
     }
 
     //creo metodo para listar en la base de datos
@@ -62,18 +68,19 @@ public class CocheDAO {
         Controles conexion = new Controles();
         Connection cn = conexion.Conectar();
 
-        //como voy  a devolver un array list  tengo que crear un objeto de eso
+        //Como voy  a devolver un array list  tengo que crear un objeto de eso
         ArrayList<Coche> listaCoches = new ArrayList<Coche>();
 
         //Statament es el objeto que usa java para hacer consultas y obtener resultados en una BD.
         //mas tarde tendre que cerrar el estatement y el resultset
         Statement st = null;
 
-        // el ResulSet Proporciona una forma de acceder y recorrer las filas de datos devueltas por la consulta.
+        // El ResulSet Proporciona una forma de acceder y recorrer las filas de datos devueltas por
+        //  la consulta.
         ResultSet rs = null;
 
-        //dentro del try catch para que no nos de error, los ponemos a null al principio y fuera del try
-        //para mandar a la base de datos una selectçç
+        //dentro del try catch para que no nos de error, los ponemos a null al principio y 
+        //fuera del try para mandar a la base de datos una select
         try {
             //Statement = sentencia. Creo una sentencia st que es donde realizare la consulta a la bbdd
             //
@@ -87,7 +94,7 @@ public class CocheDAO {
 
             //en el while recorro el Resultset y voy añadiendo usuarios en la listaUsuarios.add
             while (rs.next()) {
-                Coche u = new Coche(rs.getInt(1), rs.getString(2), rs.getString(3));
+            Coche u = new Coche(rs.getInt(1), rs.getString(2), rs.getString(3));
                 listaCoches.add(u);
 
             }
@@ -117,11 +124,11 @@ public class CocheDAO {
 
     
     public void borrar (Coche c){
-    
         Controles conexion = new Controles();
         Connection cn = conexion.Conectar();
 
         PreparedStatement ps = null;
+        
         try {
             //de las distintas opciones prepareStatement
             ps = cn.prepareStatement("Delete from concesionario where num_serie = ?");
@@ -139,38 +146,57 @@ public class CocheDAO {
                 conexion.Desconectar(cn);
 
             } catch (SQLException ex) {
-
                 System.out.println("Error al cerrar recursos" + ex);
             }
         }
     }
+
+    
+ //creo metodo para modificar los datos de la bbdd
+    public void modificar(Coche c) {
+
+        //mismos pasos que el anterios solo modifico la parte que en lugar de para 
+        //consulta es para modificar
+        //Para conectarme y para acceder y buscar en la base de datos
+        Controles conexion = new Controles();
+        Connection cn = conexion.Conectar();
+
+        //Para esto no usaremos un Statement ya que voy a lanzar una sentencia e incluye muchas '' que pueden dar error
+        //mejor lo hago con Prepared
+        //cuando me van a pasar algun dato uso preparedStatment
+        PreparedStatement ps = null;
+
+        try {
+            //Statement = sentencia. Creo una sentencia st que es donde realizare la consulta a la bbdd
+            //
+            
+            ps = cn.prepareStatement("UPDATE concesionario set marca = ?, modelo = ? where num_serie = ?");
+            ps.setInt(3, c.getNum_serie());
+            ps.setString(1, c.getMarca());
+            ps.setString(2, c.getModelo());
+            ps.executeUpdate();
+            System.out.println("modificado correctamente ");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+
+        } finally {
+
+            try {
+                ps.close();
+                cn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.out.println(ex.getMessage());
+            }
+
+        }
+
+    }    
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+}
 //    public Coche buscarPorNumSerie(Int numSerie) //devuelve un objeto Pelicula si el titulo coincide con el titulo
 
               
@@ -203,8 +229,3 @@ public class CocheDAO {
 //    }
 //   
     
-    
-    
-    
-
-}

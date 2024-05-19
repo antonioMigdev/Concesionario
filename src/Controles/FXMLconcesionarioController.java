@@ -50,16 +50,16 @@ public class FXMLconcesionarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void guardarDatos(ActionEvent event) {
-        
-         if (num_serie.getText().isEmpty() || marca.getText().isEmpty() || modelo.getText().isEmpty()) {
+
+        //HAGO UN IF PARA SI FALTA ALGUN CAMPO SALTE UNA ALERTA        
+        if (num_serie.getText().isEmpty() || marca.getText().isEmpty() || modelo.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            
-            
+
 //            ArrayList<String> lista = new ArrayList<String>();
 //            lista.add("Nombre");
 //            lista.add("Dirección");
@@ -69,49 +69,42 @@ public class FXMLconcesionarioController implements Initializable {
 //            for (String datos : lista) {
 //                salida = salida + datos + "\n";
 //            }
-// alert.setContentText("Debe introducir los DATOS de cliente: \n" + salida);
-            
-           alert.setContentText("Debe introducir los datos dl coche:  \n numero de serie \n marca \n modelo");            
-           alert.showAndWait();
-           
+//        alert.setContentText("Debe introducir los DATOS de cliente: \n" + salida);
+            alert.setContentText("Debe introducir los datos dl coche:  \n numero de serie \n marca \n modelo");
+            alert.showAndWait();
+
         } else {
-             
+            //SI NO SALTA ALERTA PORQUE NO FALTA NINGUN INTRO DATOS DE LOS TEXT
+            // EN MI OBJETO C DE LA CLASE COCHE
             Coche c = new Coche();
             c.setNum_serie(Integer.parseInt(num_serie.getText()));
             c.setMarca(marca.getText());
             c.setModelo(modelo.getText());
-            
-            
-            
-//creamos un objeto DAO para usarlo para meter los datos en la b.d.
+
+            //creamos un objeto DAO para usarlo para meter los datos en la b.d.
             CocheDAO cDao = new CocheDAO();
             int result = cDao.insertar(c);
-          if (result != 0) {
+            if (result != 0) {
                 Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                 alert2.setTitle("INFORMACION");
                 alert2.setHeaderText("Mensaje de información");
                 alert2.setContentText("Se ha insertado correctamente");
                 alert2.showAndWait();
-         }
+            }
 
-         
-    }
+        }
     }
 
-    
-    
     @FXML
     private void Buscar(ActionEvent event) {
-        
-       ArrayList<Coche> busquedaC = new ArrayList<Coche>();
-        
-     if (num_serie.getText().isEmpty()) {
-         
-           
+        // 
+        ArrayList<Coche> busquedaC = new ArrayList<Coche>();
+        //HAGO UN IF SOBRE LA CLAVE PRIMARIA YA QUE ES LO QUE IDENTIF LA BUSQUEDA   
+        if (num_serie.getText().isEmpty()) {
+
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
-            
-            
+
 //            ArrayList<String> lista = new ArrayList<String>();
 //            lista.add("Nombre");
 //            lista.add("Dirección");
@@ -121,96 +114,96 @@ public class FXMLconcesionarioController implements Initializable {
 //            for (String datos : lista) {
 //                salida = salida + datos + "\n";
 //            }
-// alert.setContentText("Debe introducir los DATOS de cliente: \n" + salida);
-            
-           alert.setContentText("Debe introducir los datos del numero de serie");     
-           alert.showAndWait();
+//       alert.setContentText("Debe introducir los DATOS de cliente: \n" + salida);
+            alert.setContentText("Debe introducir los datos del numero de serie");
+            alert.showAndWait();
         } else {
-             
             Coche c = new Coche();
             c.setNum_serie(Integer.parseInt(num_serie.getText()));
-           
-            
-//creamos un objeto DAO para usarlo para meter los datos en la b.d.
+
+            //creamos un objeto DAO para usarlo para meter los datos en la b.d.
             CocheDAO cDao = new CocheDAO();
-            
-            
+
             busquedaC = cDao.listar();
-            
-            String bucle= "";
-            for(Coche c2 : busquedaC){
-                
-                bucle=bucle+" "+c2.toString();
+
+            String bucle = "";
+            for (Coche c2 : busquedaC) {
+
+                bucle = bucle + " " + c2.toString();
             }
-            
-           System.out.println(bucle);
-         
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                alert2.setTitle("INFORMACION");
-                alert2.setHeaderText("Mensaje de información");
-                alert2.setContentText("El resultado es: \n"+bucle);
-                alert2.showAndWait();
-        
+
+            System.out.println(bucle);
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("INFORMACION");
+            alert2.setHeaderText("Mensaje de información");
+            alert2.setContentText("El resultado es: \n" + bucle);
+            alert2.showAndWait();
+
+        }
+        //return busquedaC;
     }
-     //return busquedaC;
-    }   
-        
-        
-        
-        
-    
 
     @FXML
     private void Actualizar(ActionEvent event) {
-        
-                
+            Coche c4 = new Coche();
+            c4.setNum_serie(parseInt(num_serie.getText()));
+            c4.setMarca(marca.getText());
+            c4.setModelo(modelo.getText());
+            
+            CocheDAO c4DAO = new CocheDAO();
+            c4DAO.modificar(c4);
+                    
     }
 
-    
-    
-    
-    
-  
     @FXML
     private void Borrar(ActionEvent event) {
-        
+
         Coche c1 = new Coche();
         c1.setNum_serie(parseInt(num_serie.getText()));
-        
+
         //quiero conectar con base de datos asi que creo objeto dao
-        CocheDAO cDAO= new CocheDAO();
-        cDAO.borrar(c1);   
-      
-        
-         Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                alert2.setTitle("INFORMACION");
-                alert2.setHeaderText("Mensaje de información");
-                alert2.setContentText("Se ha eliminado el"+num_serie.getText());
-                alert2.showAndWait();
-        
-        
+        CocheDAO cDAO = new CocheDAO();
+        cDAO.borrar(c1);
+
+        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+        alert2.setTitle("INFORMACION");
+        alert2.setHeaderText("Mensaje de información");
+        alert2.setContentText("Se ha eliminado el" + num_serie.getText());
+        alert2.showAndWait();
+
     }
 
     @FXML
     private void listar(ActionEvent event) {
-        
+
         ArrayList<Coche> listaCoches = new ArrayList<Coche>();
-        
+
         //como voy a conectar el boton con la base de datos tengo que crear un objeto dao
         CocheDAO cDAO = new CocheDAO();
-        listaCoches=cDAO.listar();
-        
-        
+        listaCoches = cDAO.listar();
+
         //PARA IMPRIMIRLO POR PANTALLA O CONSOLA:
-        for (Coche cIntermedio :listaCoches){
-            System.out.println(cIntermedio.toString()+"\n");
-            
-            
-        }      
-        
-        
-        
+        for (Coche cIntermedio : listaCoches) {
+            System.out.println(cIntermedio.toString() + "\n");
+
+        }
+
+        String listadoCompleto = "";
+
+        for (Coche c3 : listaCoches) {
+
+            listadoCompleto = listadoCompleto + c3.toString() + "\n";
+        }
+
+        System.out.println(listadoCompleto);
+        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+        alert2.setTitle("INFORMACION");
+        alert2.setHeaderText("Mensaje de informacion");
+        alert2.setContentText(listadoCompleto);
+        alert2.showAndWait();
+
     }
-    
-    
+
 }
+
+

@@ -11,8 +11,7 @@ import java.sql.*;
  * @author Usuario
  */
 public class Controles {
-    
-  
+     
     public Connection Conectar(){
         
         Connection cn=null;
@@ -30,11 +29,12 @@ public class Controles {
             System.out.println(ex.getMessage());
             
         }
-        
-        
+            
         return cn;       
         
     }
+    
+    
     
     public void Desconectar (Connection cn){
     
