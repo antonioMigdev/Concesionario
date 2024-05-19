@@ -17,7 +17,7 @@ public class Controles {
         
         Connection cn=null;
         
-       String url = "jdbc:oracle:thin:@localhost:49712:XE";
+       String url = "jdbc:oracle:thin:@localhost:49715:XE";
         String usuario = "programacion";
         String contraseña = "programacion";
         

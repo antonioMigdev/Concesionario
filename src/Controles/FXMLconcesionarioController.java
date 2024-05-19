@@ -6,6 +6,7 @@ package Controles;
 
 import Modelo.Coche;
 import Modelo.CocheDAO;
+import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,6 +41,8 @@ public class FXMLconcesionarioController implements Initializable {
     private Button actualizar;
     @FXML
     private Button borrar;
+    @FXML
+    private Button listar;
 
     /**
      * Initializes the controller class.
@@ -132,7 +135,7 @@ public class FXMLconcesionarioController implements Initializable {
             CocheDAO cDao = new CocheDAO();
             
             
-            busquedaC = cDao.buscar();
+            busquedaC = cDao.listar();
             
             String bucle= "";
             for(Coche c2 : busquedaC){
@@ -160,41 +163,54 @@ public class FXMLconcesionarioController implements Initializable {
     @FXML
     private void Actualizar(ActionEvent event) {
         
-        
-        
+                
     }
 
+    
+    
+    
+    
   
     @FXML
     private void Borrar(ActionEvent event) {
         
-        Coche c = new Coche();
-        Controles conexion = new Controles();
-        Connection cn = conexion.Conectar();
-
-        PreparedStatement ps = null;
-        try {
-            //de las distintas opciones prepareStatement
-            ps = cn.prepareStatement("Delete coche where num_serie = ?");
-            ps.setInt(1, c.getNum_serie());
-            ps.executeUpdate();
-            System.out.println("Coche eliminado");
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
-
-        } finally {
-            try {
-                ps.close();
-                conexion.Desconectar(cn);
-
-            } catch (SQLException ex) {
-
-                System.out.println("Error al cerrar recursos" + ex);
-            }
-        }
+        Coche c1 = new Coche();
+        c1.setNum_serie(parseInt(num_serie.getText()));
+        
+        //quiero conectar con base de datos asi que creo objeto dao
+        CocheDAO cDAO= new CocheDAO();
+        cDAO.borrar(c1);   
+      
+        
+         Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                alert2.setTitle("INFORMACION");
+                alert2.setHeaderText("Mensaje de información");
+                alert2.setContentText("Se ha eliminado el"+num_serie.getText());
+                alert2.showAndWait();
         
         
     }
+
+    @FXML
+    private void listar(ActionEvent event) {
+        
+        ArrayList<Coche> listaCoches = new ArrayList<Coche>();
+        
+        //como voy a conectar el boton con la base de datos tengo que crear un objeto dao
+        CocheDAO cDAO = new CocheDAO();
+        listaCoches=cDAO.listar();
+        
+        
+        //PARA IMPRIMIRLO POR PANTALLA O CONSOLA:
+        for (Coche cIntermedio :listaCoches){
+            System.out.println(cIntermedio.toString()+"\n");
+            
+            
+        }      
+        
+        
+        
+    }
+    
+    
 }

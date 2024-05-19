@@ -7,6 +7,7 @@ package Modelo;
 import java.sql.*;
 import java.util.ArrayList;
 import Controles.Controles;
+import java.util.HashSet;
 
 /**
  *
@@ -53,28 +54,25 @@ public class CocheDAO {
         return result;
 
     }
-    
-    
-     //creo metodo para buscar en la base de datos
-    public ArrayList<Coche> buscar() {
 
-        //Para conectarme y para acceder y buscar en la base de datos
+    //creo metodo para listar en la base de datos
+    public ArrayList<Coche> listar() {
+
+        //Para conectarme y para acceder y listar en la base de datos
         Controles conexion = new Controles();
         Connection cn = conexion.Conectar();
 
         //como voy  a devolver un array list  tengo que crear un objeto de eso
         ArrayList<Coche> listaCoches = new ArrayList<Coche>();
-        
+
         //Statament es el objeto que usa java para hacer consultas y obtener resultados en una BD.
         //mas tarde tendre que cerrar el estatement y el resultset
-      
         Statement st = null;
-        
-        
+
         // el ResulSet Proporciona una forma de acceder y recorrer las filas de datos devueltas por la consulta.
         ResultSet rs = null;
 
-          //dentro del try catch para que no nos de error, los ponemos a null al principio y fuera del try
+        //dentro del try catch para que no nos de error, los ponemos a null al principio y fuera del try
         //para mandar a la base de datos una selectçç
         try {
             //Statement = sentencia. Creo una sentencia st que es donde realizare la consulta a la bbdd
@@ -115,10 +113,95 @@ public class CocheDAO {
         }
         return listaCoches;
     }
+
+
+    
+    public void borrar (Coche c){
+    
+        Controles conexion = new Controles();
+        Connection cn = conexion.Conectar();
+
+        PreparedStatement ps = null;
+        try {
+            //de las distintas opciones prepareStatement
+            ps = cn.prepareStatement("Delete from concesionario where num_serie = ?");
+            ps.setInt(1, c.getNum_serie());
+            ps.executeUpdate();
+            System.out.println("Coche eliminado");
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+
+        } finally {
+            try {
+                ps.close();
+                conexion.Desconectar(cn);
+
+            } catch (SQLException ex) {
+
+                System.out.println("Error al cerrar recursos" + ex);
+            }
+        }
+    }
     
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//    public Coche buscarPorNumSerie(Int numSerie) //devuelve un objeto Pelicula si el titulo coincide con el titulo
+
+              
+              
+      
+//    private HashSet<Coche> listaCoches;
+//
+//    Coche coche1 = null;
+//    //CON ESTE FOR (CREO VARIABLE P DE CLASE PELICULA EN LA QUE IRA INTRODUCIENDO
+//    //TEMPORALMENTE LO QUE LEE PARA COMPARARLO EN EL: DE LISTApELICULAS
+//
+//    
+//        for (){Coche c: this.listaCoches
+//        
+//            ){
+//        if (c.getNum_serie().equals(num_Serie)) {
+//                coche1 = c;
+//
+//            }
+//        }
+//
+//    }
+//
+//    if (p.getTitulo () 
+//        .equals(titulo)) {
+//                pel = p;
+//    }
+//}
+//return pel;
+//    }
+//   
     
     
     

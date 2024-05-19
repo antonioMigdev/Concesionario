@@ -20,6 +20,7 @@
             <Button fx:id="buscar" layoutX="351.0" layoutY="124.0" mnemonicParsing="false" onAction="#Buscar" text="Buscar" />
             <Button fx:id="actualizar" layoutX="342.0" layoutY="170.0" mnemonicParsing="false" onAction="#Actualizar" text="Actualizar" />
             <Button fx:id="borrar" layoutX="352.0" layoutY="234.0" mnemonicParsing="false" onAction="#Borrar" text="Borrar" />
+            <Button fx:id="listar" layoutX="442.0" layoutY="234.0" mnemonicParsing="false" onAction="#listar" text="Listar" />
          </children>
       </Pane>
    </children>
